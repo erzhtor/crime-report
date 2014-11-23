@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="5dp"
+    android:layout_marginRight="5dp"
+    android:layout_marginBottom="1dp"
+    android:padding="5dp"
+    android:orientation="vertical"
+    android:background="@color/crime_item_selected_color"
+    >
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:text="@string/name"
+            android:textSize="@dimen/text_commentor_name_text_size"/>
+        <TextView
+            android:id="@+id/commentor"
+            android:textStyle="bold|italic"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/text_commentor_name_size"
+            android:paddingLeft="5dp"
+            android:paddingRight="0dip"
+            android:text="John Bless"
+            />
+
+    </LinearLayout>
+    <TextView
+        android:id="@+id/comment_text"
+        android:textStyle="italic"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:textSize="@dimen/text_comment_size"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="0dip"
+        android:text="Da da, ya toje videl!"
+        />
+
+</LinearLayout>

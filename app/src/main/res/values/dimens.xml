@@ -2,4 +2,19 @@
     <!-- Default screen margins, per the Android Design guidelines. -->
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
+
+    <dimen name="row_category_and_date_size">45dp</dimen>
+    <dimen name="text_category_size">20dp</dimen>
+    <dimen name="text_date_and_time">18dp</dimen>
+    <dimen name="text_description_size">17dp</dimen>
+    <dimen name="text_read_more_size">16dp</dimen>
+    <dimen name="text_police_report_size">15dp</dimen>
+    <dimen name="text_comments_text_size">18dp</dimen>
+    <dimen name="text_comment_size">20dp</dimen>
+    <dimen name="text_commentor_name_text_size">15dp</dimen>
+    <dimen name="text_commentor_name_size">16dp</dimen>
+    <!--<dimen name="name">0dp</dimen>-->
+    <!--<dimen name="name">0dp</dimen>-->
+    <!--<dimen name="name">0dp</dimen>-->
+
 </resources>

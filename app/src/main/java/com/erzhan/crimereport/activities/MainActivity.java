@@ -1,18 +1,25 @@
 package com.erzhan.crimereport.activities;
 
 
+import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
+import com.erzhan.crimereport.API.Constants;
 import com.erzhan.crimereport.R;
 import com.erzhan.crimereport.classes.Crime;
 import com.erzhan.crimereport.API.MyAsyncTask;
 import com.erzhan.crimereport.API.MyJsonParser;
+import com.erzhan.crimereport.fragments.FragmentCrimes;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -22,24 +29,50 @@ import java.util.Stack;
 import java.util.concurrent.ExecutionException;
 
 
-public class MainActivity extends FragmentActivity {
+public class MainActivity extends FragmentActivity implements View.OnClickListener {
 
     private Stack<Fragment> fragmentStack = new Stack<Fragment>();
+    private ArrayList<Crime> crimes;
+    private JSONArray crimesJson;
+    public boolean isInternetAvailable()
+    {
+        ConnectivityManager cm =
+                (ConnectivityManager)getSystemService(this.CONNECTIVITY_SERVICE);
 
+        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+        boolean isConnected = activeNetwork != null &&
+                activeNetwork.isConnectedOrConnecting();
+        return isConnected;
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        AsyncTask<Void, Void, JSONArray> myAsyncTask = new MyAsyncTask(this).execute();
+        MyAsyncTask myAsyncTask = (MyAsyncTask) new MyAsyncTask(this).execute(MyAsyncTask.GET_CRIMES);
 
-        try {
-            ArrayList<Crime> lst = MyJsonParser.parseArrayCrimes(myAsyncTask.get());
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        } catch (JSONException e) {
-            e.printStackTrace();
+        if (isInternetAvailable()) {
+
+            try {
+                crimesJson = myAsyncTask.get();
+                if (crimesJson != null) {
+                    crimes = MyJsonParser.parseArrayCrimes(crimesJson);
+                    FragmentCrimes f = new FragmentCrimes();
+                    f.setCrimes(crimes);
+                    showFragment(f);
+                } else {
+                    //error
+                }
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            } catch (ExecutionException e) {
+                e.printStackTrace();
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+        else
+        {
+            //not internet access
         }
     }
 
@@ -83,9 +116,27 @@ public class MainActivity extends FragmentActivity {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-        if (id == R.id.action_settings) {
+        if (id == R.id.add_report) {
+            return true;
+        }
+        else if (id == R.id.action_about)
+        {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onClick(View view) {
+
+        Intent intent = new Intent(this, ActivityCrime.class);
+        int index = view.getId();
+        //put crime to intent
+        try {
+            intent.putExtra(Constants.CrimeJsonObject, crimesJson.get(index).toString());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        startActivity(intent);
     }
 }

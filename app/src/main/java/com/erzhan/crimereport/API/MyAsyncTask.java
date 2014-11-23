@@ -11,12 +11,15 @@ import org.json.JSONArray;
 /**
  * Created by Erzhan on 8-Nov 14.
  */
-public class MyAsyncTask extends AsyncTask<Void, Void, JSONArray> {
+public class MyAsyncTask extends AsyncTask<String, Void, JSONArray> {
 
     private Context context;
     private ProgressDialog progressDialog;
     private boolean success = true;
     private JSONArray jsonArray = null;
+    public static String GET_CRIMES = "GET_CRIMES";
+    public static String GET_COMMENTS = "GET_COMMENTS";
+
 
     public MyAsyncTask(Context context)
     {
@@ -33,10 +36,13 @@ public class MyAsyncTask extends AsyncTask<Void, Void, JSONArray> {
     }
 
     @Override
-    protected JSONArray doInBackground(Void... voids) {
+    protected JSONArray doInBackground(String... strings) {
 
         try {
-            jsonArray = MyConnection.getJsonArrayOfCrimes(context);
+            if (strings[0] == GET_CRIMES)
+                jsonArray = MyConnection.getJsonArrayOfCrimes();
+            else if (strings[0] == GET_COMMENTS)
+                jsonArray = MyConnection.getJsonArrayOfComments(Integer.parseInt(strings[1]));
         } catch (MyConnection.MyConnectionException e) {
             e.printStackTrace();
         }

@@ -22,7 +22,7 @@ public class MyJsonParser {
 
         return list;
     }
-    private static Crime getCrime(JSONObject json) throws JSONException {
+    public static Crime getCrime(JSONObject json) throws JSONException {
         Crime crime = new Crime();
 
         crime.setId(json.getInt(Constants.CRIME_ID));

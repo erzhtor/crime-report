@@ -3,66 +3,29 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="30dp"
-        android:orientation="horizontal"
-        >
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:gravity="center_vertical"
-            android:paddingLeft="15dp"
-            android:paddingRight="0dip"
-            android:background="@color/category_color"
-            android:text="Убийство"
-            android:id="@+id/category"
-            />
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:paddingLeft="0dip"
-            android:paddingRight="5dp"
-            android:gravity="center_vertical|end"
-            android:textColor="@color/white_color"
-            android:background="@color/date_time_color"
-            android:text="03 ноября в 12:00"
-            android:id="@+id/date_and_time"
-            />
-        </LinearLayout>
+    <include layout="@layout/row_crime_and_date_time"></include>
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="В Бишкеке ночью на улице Сеченова произошел крупный пожар. Об этом сообщили в МЧС."
             android:padding="10dp"
             android:id="@+id/desciption"
-            />
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="30dp"
-        android:orientation="horizontal"
-        >
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:gravity="center_vertical"
-            android:paddingLeft="5dp"
-            android:paddingRight="0dip"
-            android:text="20 дней назад"
-            android:id="@+id/time_ago"
+            android:textSize="@dimen/text_description_size"
+            android:textStyle="italic"
             />
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:paddingLeft="0dip"
-            android:paddingRight="5dp"
-            android:gravity="center_vertical|end"
-            android:text="читать полностью"
             android:id="@+id/read_more"
+            android:textSize="@dimen/text_read_more_size"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/read_more"
+            android:textColor="@drawable/selector_read_more"
+            android:gravity="center_vertical|end"
+            android:textStyle="bold"
+            android:selectAllOnFocus="true"
+            android:linksClickable="true"
+            android:autoLink="all"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
             />
-    </LinearLayout>
 </LinearLayout>

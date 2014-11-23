@@ -1,0 +1,53 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.erzhan.crimereport.activities.ActivityCrime"
+    android:orientation="vertical"
+    >
+    <include layout="@layout/row_crime_and_date_time"></include>
+
+    <!--//scrollbar-->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:scrollbarAlwaysDrawVerticalTrack="true"
+        >
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@color/common_signin_btn_dark_text_disabled">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:textSize="@dimen/text_description_size"
+                android:id="@+id/description"
+                android:text="В бишкеке на улице советская произошло убийство"
+                />
+
+            <CheckBox
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/police_report"
+                android:id="@+id/police_report"
+                android:checked="true"
+                android:textSize="@dimen/text_police_report_size"
+                android:clickable="false"
+                android:layout_gravity="end" />
+        </LinearLayout>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/comments"
+            android:textStyle="bold"
+            android:layout_margin="5dp"
+            android:textSize="@dimen/text_comments_text_size"
+            />
+        <include layout="@layout/item_comment"></include>
+        <include layout="@layout/item_comment"></include>
+        <include layout="@layout/item_comment"></include>
+    </LinearLayout>
+</LinearLayout>

@@ -1,6 +1,5 @@
 package com.erzhan.crimereport.API;
 
-import android.content.Context;
 import android.util.Log;
 
 import org.apache.http.HttpEntity;
@@ -31,8 +30,20 @@ public class MyConnection {
     private MyConnection() {
     }
 
-    public static JSONArray getJsonArrayOfCrimes(Context context) throws MyConnectionException {
-        String url = Constants.URL;
+    public static JSONArray getJsonArrayOfCrimes() throws MyConnectionException {
+        String url = Constants.crime_controller_url;
+
+        return getJsonArray(url);
+    }
+    public static JSONArray getJsonArrayOfComments(int crime_id) throws MyConnectionException {
+        String url = Constants.comment_controller_url;
+        url += "?crime_id=" + crime_id;
+
+        return getJsonArray(url);
+
+    }
+    private static JSONArray getJsonArray(String url) throws MyConnectionException {
+
         JSONArray jarray;
         StringBuilder builder = new StringBuilder();
         HttpClient client = new DefaultHttpClient();
@@ -61,14 +72,12 @@ public class MyConnection {
         }
         // Parse String to JSON object
         try {
-            jarray = new JSONArray( builder.toString());
+            jarray = new JSONArray(builder.toString());
         } catch (JSONException e) {
-            Log.e("JSON Parser", "Error parsing data " + e.toString());
             throw new MyConnectionException("Error");
         } // return JSON Object
         return jarray;
     }
-
     public static class MyConnectionException extends Exception
     {
         MyConnectionException(String msg)

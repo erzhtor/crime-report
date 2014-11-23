@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+android:layout_width="match_parent"
+android:layout_height="@dimen/row_category_and_date_size"
+android:orientation="horizontal"
+    >
+<TextView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_weight="1"
+    android:gravity="center_vertical"
+    android:paddingLeft="15dp"
+    android:paddingRight="0dip"
+    android:background="@color/category_color"
+    android:text="Убийство"
+    android:id="@+id/category"
+    android:textStyle="bold"
+    android:textSize="@dimen/text_category_size"
+    />
+<TextView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_weight="1"
+    android:paddingLeft="0dip"
+    android:paddingRight="5dp"
+    android:gravity="center_vertical|end"
+    android:textColor="@color/white_color"
+    android:background="@color/date_time_color"
+    android:text="2014-10-04\n04:39:22"
+    android:id="@+id/date_and_time"
+    android:textSize="@dimen/text_date_and_time"
+    />
+</LinearLayout>

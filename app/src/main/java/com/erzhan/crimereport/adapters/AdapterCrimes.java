@@ -7,9 +7,12 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
+import com.erzhan.crimereport.API.Constants;
 import com.erzhan.crimereport.R;
+import com.erzhan.crimereport.activities.MainActivity;
 import com.erzhan.crimereport.classes.Crime;
 
+import java.util.Calendar;
 import java.util.List;
 
 /**
@@ -17,8 +20,11 @@ import java.util.List;
  */
 public class AdapterCrimes extends ArrayAdapter<Crime> {
 
+    private final int textLimit = 100;
+    private Calendar calendar;
     public AdapterCrimes(Context context, int resource, List<Crime> objects) {
         super(context, resource, objects);
+        calendar= Calendar.getInstance();
     }
 
     @Override
@@ -30,20 +36,30 @@ public class AdapterCrimes extends ArrayAdapter<Crime> {
 
         //set category
         TextView textView = (TextView)v.findViewById(R.id.category);
-        textView.setText("" + crime.getCategory());
+        String category = getContext().getResources().getString(
+                Constants.getCrimeCategoryStringID(crime.getCategory()));
+        textView.setText(category);
 
         //set Time
         textView = (TextView)v.findViewById(R.id.date_and_time);
-       textView.setText(crime.getDate() + " " + crime.getTime());
+        textView.setText(crime.getDate() + "\n" + crime.getTime());
 
         //set Description
         textView = (TextView)v.findViewById(R.id.desciption);
-        textView.setText(crime.getDescription());
+        String text = crime.getDescription();
+        if (text.length() > textLimit)
+        {
+            text = text.substring(0, textLimit);
+            text +=" ...";
+        }
+        textView.setText(text);
 
-        //set Time ago
-//        textView = (TextView)v.findViewById(R.id.desciption);
-//        textView.setText(crime);
+        //set onclick
+        textView = (TextView)v.findViewById(R.id.read_more);
+        textView.setId(crime.getId());
+        textView.setOnClickListener(((MainActivity)getContext()));
 
         return v;
     }
+
 }

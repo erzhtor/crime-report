@@ -54,7 +54,7 @@ public class Crime {
         this.time = time;
     }
 
-    public int isPoliceReport() {
+    public int getPoliceReport() {
         return policeReport;
     }
 

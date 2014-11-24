@@ -1,10 +1,13 @@
 package com.erzhan.crimereport.API;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
+import android.util.Log;
 
 import com.erzhan.crimereport.Message;
+import com.erzhan.crimereport.activities.MainActivity;
 
 import org.json.JSONArray;
 
@@ -13,7 +16,7 @@ import org.json.JSONArray;
  */
 public class MyAsyncTask extends AsyncTask<String, Void, JSONArray> {
 
-    private Context context;
+    private Activity context;
     private ProgressDialog progressDialog;
     private boolean success = true;
     private JSONArray jsonArray = null;
@@ -21,7 +24,7 @@ public class MyAsyncTask extends AsyncTask<String, Void, JSONArray> {
     public static String GET_COMMENTS = "GET_COMMENTS";
 
 
-    public MyAsyncTask(Context context)
+    public MyAsyncTask(Activity context)
     {
         this.context = context;
     }
@@ -29,10 +32,11 @@ public class MyAsyncTask extends AsyncTask<String, Void, JSONArray> {
 
     @Override
     protected void onPreExecute() {
-        super.onPreExecute();
         progressDialog = new ProgressDialog(context);
         progressDialog.setMessage("fetching data from server...");
         progressDialog.show();
+        Log.i("progressDialog", "here");
+        super.onPreExecute();
     }
 
     @Override
@@ -44,6 +48,7 @@ public class MyAsyncTask extends AsyncTask<String, Void, JSONArray> {
             else if (strings[0] == GET_COMMENTS)
                 jsonArray = MyConnection.getJsonArrayOfComments(Integer.parseInt(strings[1]));
         } catch (MyConnection.MyConnectionException e) {
+            success = false;
             e.printStackTrace();
         }
         return jsonArray;
@@ -57,7 +62,11 @@ public class MyAsyncTask extends AsyncTask<String, Void, JSONArray> {
 
         if (!success) // look for standard solution
         {
-            Message.message(context, "Sorry,\n Some ERROR ocurred :(");
+            Message.message(context, "Sorry,\n Unable to connect to server :(");
+        }
+        else
+        {
+            ((MainActivity)context).setMyAsyncTaskResult(o);
         }
     }
 }

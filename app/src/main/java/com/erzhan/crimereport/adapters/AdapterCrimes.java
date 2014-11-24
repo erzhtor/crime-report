@@ -21,16 +21,19 @@ import java.util.List;
 public class AdapterCrimes extends ArrayAdapter<Crime> {
 
     private final int textLimit = 100;
-    private Calendar calendar;
+//    private Calendar calendar;
     public AdapterCrimes(Context context, int resource, List<Crime> objects) {
         super(context, resource, objects);
-        calendar= Calendar.getInstance();
+//        calendar= Calendar.getInstance();
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int pos, View convertView, ViewGroup parent) {
         LayoutInflater inflater = (LayoutInflater)getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View v = inflater.inflate(R.layout.item_crime, parent, false);
+
+        //in order to make newest top
+        final int position = getCount() - pos - 1;
 
         Crime crime = getItem(position);
 
@@ -56,7 +59,7 @@ public class AdapterCrimes extends ArrayAdapter<Crime> {
 
         //set onclick
         textView = (TextView)v.findViewById(R.id.read_more);
-        textView.setId(crime.getId());
+        textView.setId(position);
         textView.setOnClickListener(((MainActivity)getContext()));
 
         return v;

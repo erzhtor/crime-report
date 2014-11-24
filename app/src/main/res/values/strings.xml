@@ -12,7 +12,7 @@
     <string name="read_more"><u>читать полностью</u></string>
 
     <string name="crime_report">Crime Report</string>
-    <string name="action_about">About</string>
+    <string name="action_about">About APP</string>
     <string name="add_report">Add Report</string>
 
     <string name="crime_details">Crime Details</string>
@@ -20,8 +20,9 @@
     <string name="name">Name: </string>
     <string name="police_report">Обращались в полицию</string>
     <string name="comments">Коментарии</string>
+    <string name="no_comments">Комментарии отсутствуют</string>
 
-    <!--<string name="name"></string>-->
+    <string name="internet_not_available">No internet access</string>
     <!--<string name="name"></string>-->
     <!--<string name="name"></string>-->
     <!--<string name="name"></string>-->

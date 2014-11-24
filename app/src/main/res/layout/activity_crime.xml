@@ -24,18 +24,20 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
                 android:textSize="@dimen/text_description_size"
-                android:id="@+id/description"
+                android:id="@+id/crime_description"
                 android:text="В бишкеке на улице советская произошло убийство"
                 />
 
-            <CheckBox
+            <CheckedTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/police_report"
                 android:id="@+id/police_report"
                 android:checked="true"
                 android:textSize="@dimen/text_police_report_size"
+                android:checkMark="?android:attr/listChoiceIndicatorMultiple"
                 android:clickable="false"
+                android:gravity="center"
                 android:layout_gravity="end" />
         </LinearLayout>
         <TextView
@@ -45,6 +47,14 @@
             android:textStyle="bold"
             android:layout_margin="5dp"
             android:textSize="@dimen/text_comments_text_size"
+            />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/no_comments"
+            android:layout_margin="5dp"
+            android:id="@+id/no_comments"
+            android:visibility="gone"
             />
         <include layout="@layout/item_comment"></include>
         <include layout="@layout/item_comment"></include>

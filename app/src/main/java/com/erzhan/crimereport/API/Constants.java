@@ -22,6 +22,10 @@ public class Constants {
     public static String LATITUDE = "latitude";
     public static String LONGITUDE = "longitude";
 
+    public static String COMMENTOR_NAME = "commentor_name";
+    public static String COMMENT_TEXT = "comment";
+
+
     public static final String crime_controller_url = "http://sfw.auca.kg/~zufar/cr_my/Controller/Crime_controller.php";
     public static final String comment_controller_url = "http://sfw.auca.kg/~zufar/cr_my/Controller/Comment_controller.php";
     public static final String CrimeJsonObject = "CrimeJsonObject";

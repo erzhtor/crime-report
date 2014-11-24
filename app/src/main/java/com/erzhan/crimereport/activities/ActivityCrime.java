@@ -5,6 +5,9 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.CheckedTextView;
+import android.widget.TextView;
 
 import com.erzhan.crimereport.API.Constants;
 import com.erzhan.crimereport.API.MyAsyncTask;
@@ -24,6 +27,7 @@ public class ActivityCrime extends ActionBarActivity {
 
     private Crime crime;
     private ArrayList<Comment> comments;
+    private JSONArray jsonArray;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,14 +37,17 @@ public class ActivityCrime extends ActionBarActivity {
         String str = extra.getString(Constants.CrimeJsonObject);
         try {
             JSONObject json = new JSONObject(str);
-            crime = MyJsonParser.getCrime(json);
-//            Log.i(cri)
+            Log.i("crime json", json.toString());
+            this.crime = MyJsonParser.parseCrimeJson(json);
+
+            setCrimeView();
             MyAsyncTask task =
                     (MyAsyncTask) new MyAsyncTask(this).execute(
                             MyAsyncTask.GET_COMMENTS, crime.getId() + "");
 
-            JSONArray jsonArray = task.get();
-
+            jsonArray = task.get();
+            this.comments = MyJsonParser.parseArrayComments(jsonArray);
+            setCommentsView();
         } catch (JSONException e) {
             e.printStackTrace();
         } catch (InterruptedException e) {
@@ -50,7 +57,32 @@ public class ActivityCrime extends ActionBarActivity {
         }
     }
 
+    private void setCrimeView()
+    {
+        TextView textView = (TextView)findViewById(R.id.crime_description);
+        textView.setText(crime.getDescription());
 
+        CheckedTextView checkBox = (CheckedTextView)findViewById(R.id.police_report);
+        if (crime.getPoliceReport() == 1){
+            checkBox.setChecked(true);
+        }
+        else
+        {
+            checkBox.setChecked(false);
+        }
+    }
+    private void setCommentsView()
+    {
+        if (comments.isEmpty())
+        {
+            TextView textView = (TextView)findViewById(R.id.no_comments);
+            textView.setVisibility(View.VISIBLE);
+            return;
+        }
+
+//        for (int i = 0; i < comments.size(); ++i); listview
+
+    }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.

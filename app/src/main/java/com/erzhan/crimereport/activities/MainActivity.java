@@ -9,12 +9,14 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
 import com.erzhan.crimereport.API.Constants;
+import com.erzhan.crimereport.Message;
 import com.erzhan.crimereport.R;
 import com.erzhan.crimereport.classes.Crime;
 import com.erzhan.crimereport.API.MyAsyncTask;
@@ -29,11 +31,13 @@ import java.util.Stack;
 import java.util.concurrent.ExecutionException;
 
 
-public class MainActivity extends FragmentActivity implements View.OnClickListener {
+public class MainActivity extends ActionBarActivity implements View.OnClickListener {
 
     private Stack<Fragment> fragmentStack = new Stack<Fragment>();
     private ArrayList<Crime> crimes;
     private JSONArray crimesJson;
+    private FragmentCrimes fragmentCrimes;
+    private MyAsyncTask myAsyncTask;
     public boolean isInternetAvailable()
     {
         ConnectivityManager cm =
@@ -44,38 +48,66 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
                 activeNetwork.isConnectedOrConnecting();
         return isConnected;
     }
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        MyAsyncTask myAsyncTask = (MyAsyncTask) new MyAsyncTask(this).execute(MyAsyncTask.GET_CRIMES);
-
+    public void setMyAsyncTaskResult(JSONArray jsonArray)
+    {
         if (isInternetAvailable()) {
 
             try {
-                crimesJson = myAsyncTask.get();
+                this.crimesJson = jsonArray;
                 if (crimesJson != null) {
                     crimes = MyJsonParser.parseArrayCrimes(crimesJson);
-                    FragmentCrimes f = new FragmentCrimes();
-                    f.setCrimes(crimes);
-                    showFragment(f);
+                    //if first initialization
+                    if (fragmentCrimes != null) {
+                        fragmentCrimes = new FragmentCrimes();
+                        fragmentCrimes.setCrimes(crimes);
+                        showFragment(fragmentCrimes );
+                    }
+                    //if reload
+                    else{
+                        fragmentCrimes.reloadListView(crimes);
+                    }
+
                 } else {
                     //error
                 }
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            } catch (ExecutionException e) {
-                e.printStackTrace();
             } catch (JSONException e) {
                 e.printStackTrace();
             }
         }
         else
         {
-            //not internet access
+            Message.message(this,
+                    getResources().getString(R.string.internet_not_available));
         }
     }
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        myAsyncTask = (MyAsyncTask) new MyAsyncTask(this).execute(MyAsyncTask.GET_CRIMES);
 
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+        if (id == R.id.reload)
+        {
+            myAsyncTask.execute(MyAsyncTask.GET_CRIMES);
+            return true;
+        }
+        else if (id == R.id.add_report) {
+            return true;
+        }
+        else if (id == R.id.action_about)
+        {
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -90,9 +122,6 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
         transaction.commitAllowingStateLoss();
 
         fragmentStack.add(f);
-    }
-    public void startFragmentCrimes()
-    {
     }
 
     @Override
@@ -110,21 +139,6 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
         super.onStop();
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-        if (id == R.id.add_report) {
-            return true;
-        }
-        else if (id == R.id.action_about)
-        {
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
 
     @Override
     public void onClick(View view) {
@@ -132,6 +146,7 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
         Intent intent = new Intent(this, ActivityCrime.class);
         int index = view.getId();
         //put crime to intent
+
         try {
             intent.putExtra(Constants.CrimeJsonObject, crimesJson.get(index).toString());
         } catch (JSONException e) {

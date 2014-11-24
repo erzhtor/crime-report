@@ -70,6 +70,7 @@ public class MyConnection {
             e.printStackTrace();
             throw new MyConnectionException("Error");
         }
+
         // Parse String to JSON object
         try {
             jarray = new JSONArray(builder.toString());

@@ -2,10 +2,17 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.erzhan.crimereport.activities.MainActivity" >
-    <!--<item android:id="@+id/add_report"-->
-        <!--android:title="@string/add_report"-->
-        <!--android:orderInCategory="100"-->
-        <!--app:showAsAction="always"/>-->
+    <item android:id="@+id/reload"
+        android:title="@string/add_report"
+        android:icon="@drawable/icon_add_report_action"
+        android:orderInCategory="100"
+        app:showAsAction="always"/>
+
+    <item android:id="@+id/add_report"
+        android:title="@string/add_report"
+        android:icon="@drawable/icon_add_report_action"
+        android:orderInCategory="100"
+        app:showAsAction="always"/>
     <item android:id="@+id/action_about"
         android:title="@string/action_about"
         android:orderInCategory="100"

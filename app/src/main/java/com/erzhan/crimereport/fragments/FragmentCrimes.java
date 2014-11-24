@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 
 import com.erzhan.crimereport.R;
+import com.erzhan.crimereport.activities.MainActivity;
 import com.erzhan.crimereport.adapters.AdapterCrimes;
 import com.erzhan.crimereport.classes.Crime;
 
@@ -25,8 +26,9 @@ public class FragmentCrimes extends Fragment {
         this.crimes = crimes;
     }
 
-    ArrayList<Crime> crimes = null;
-    ListView listView = null;
+    private ArrayList<Crime> crimes = null;
+    private ListView listView = null;
+    private AdapterCrimes adapter;
     public FragmentCrimes() {
         // Required empty public constructor
     }
@@ -42,7 +44,7 @@ public class FragmentCrimes extends Fragment {
         {
             listView = (ListView)v.findViewById(R.id.crimesList);
 
-            AdapterCrimes adapter = new AdapterCrimes(getActivity(), R.layout.item_crime, crimes);
+            adapter = new AdapterCrimes(getActivity(), R.layout.item_crime, crimes);
             listView.setAdapter(adapter);
 
         }
@@ -50,5 +52,16 @@ public class FragmentCrimes extends Fragment {
         return v;
     }
 
-
+    public boolean reloadListView(ArrayList<Crime> crimes)
+    {
+        this.crimes = crimes;
+        if (adapter != null)
+        {
+            adapter.clear();
+            adapter.addAll(this.crimes);
+            adapter.notifyDataSetChanged();
+            return true;
+        }
+        return false;
+    }
 }

@@ -10,6 +10,7 @@
         <activity
             android:name=".activities.MainActivity"
             android:label="@string/crime_report"
+            android:theme="@style/MainActivityTheme"
             android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize"
             >
             <intent-filter>

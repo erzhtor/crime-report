@@ -7,12 +7,15 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.CheckedTextView;
+import android.widget.ListView;
 import android.widget.TextView;
 
+import com.erzhan.crimereport.API.AsyncTaskFetchComments;
 import com.erzhan.crimereport.API.Constants;
-import com.erzhan.crimereport.API.MyAsyncTask;
+import com.erzhan.crimereport.API.AsyncTaskFetchCrimes;
 import com.erzhan.crimereport.API.MyJsonParser;
 import com.erzhan.crimereport.R;
+import com.erzhan.crimereport.adapters.AdapterComments;
 import com.erzhan.crimereport.classes.Comment;
 import com.erzhan.crimereport.classes.Crime;
 
@@ -28,6 +31,9 @@ public class ActivityCrime extends ActionBarActivity {
     private Crime crime;
     private ArrayList<Comment> comments;
     private JSONArray jsonArray;
+    private AsyncTaskFetchComments asyncTaskFetchComments;
+    private ListView commentsListView;
+    private AdapterComments adapterComments;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,19 +46,12 @@ public class ActivityCrime extends ActionBarActivity {
             Log.i("crime json", json.toString());
             this.crime = MyJsonParser.parseCrimeJson(json);
 
-            setCrimeView();
-            MyAsyncTask task =
-                    (MyAsyncTask) new MyAsyncTask(this).execute(
-                            MyAsyncTask.GET_COMMENTS, crime.getId() + "");
+            //set Comments
+            asyncTaskFetchComments = (AsyncTaskFetchComments)
+                    new AsyncTaskFetchComments(this).execute(crime.getId());
 
-            jsonArray = task.get();
-            this.comments = MyJsonParser.parseArrayComments(jsonArray);
-            setCommentsView();
+            setCrimeView();
         } catch (JSONException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
             e.printStackTrace();
         }
     }
@@ -71,17 +70,37 @@ public class ActivityCrime extends ActionBarActivity {
             checkBox.setChecked(false);
         }
     }
-    private void setCommentsView()
+    public void setCommentsView(JSONArray jsonArray)
     {
-        if (comments.isEmpty())
-        {
-            TextView textView = (TextView)findViewById(R.id.no_comments);
-            textView.setVisibility(View.VISIBLE);
-            return;
+        this.jsonArray = jsonArray;
+        try {
+            this.comments = MyJsonParser.parseArrayComments(this.jsonArray);
+
+            //no comments
+            TextView textView = (TextView) findViewById(R.id.no_comments);
+            if (comments.isEmpty()) {
+                textView.setVisibility(View.VISIBLE);
+                return;
+            }
+            //firs load
+            else if (adapterComments == null) {
+                adapterComments = new AdapterComments(
+                        this, R.layout.item_comment, comments);
+                commentsListView = (ListView)findViewById(R.id.comments_listView);
+                commentsListView.setAdapter(adapterComments);
+                textView.setVisibility(View.GONE);
+            }
+            //reload
+            else
+            {
+                textView.setVisibility(View.GONE);
+                adapterComments.clear();
+                adapterComments.addAll(comments);
+                adapterComments.notifyDataSetChanged();
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
-
-//        for (int i = 0; i < comments.size(); ++i); listview
-
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -96,7 +115,13 @@ public class ActivityCrime extends ActionBarActivity {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_reload_comments)
+        {
+            asyncTaskFetchComments = new AsyncTaskFetchComments(this);
+            asyncTaskFetchComments.execute(crime.getId());
+            return true;
+        }
+        else if (id == R.id.add_comment) {
             return true;
         }
         return super.onOptionsItemSelected(item);

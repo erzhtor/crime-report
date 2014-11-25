@@ -17,10 +17,14 @@
 
     <string name="crime_details">Crime Details</string>
     <string name="add_comment">Add Comment</string>
+    <string name="reload_crimes">Reload</string>
+    <string name="reload_comments">Reload</string>
     <string name="name">Name: </string>
     <string name="police_report">Обращались в полицию</string>
     <string name="comments">Коментарии</string>
     <string name="no_comments">Комментарии отсутствуют</string>
+    <string name="crimes">Crimes</string>
+    <string name="map">Map</string>
 
     <string name="internet_not_available">No internet access</string>
     <!--<string name="name"></string>-->

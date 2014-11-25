@@ -4,13 +4,10 @@ package com.erzhan.crimereport.activities;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.os.AsyncTask;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -19,7 +16,7 @@ import com.erzhan.crimereport.API.Constants;
 import com.erzhan.crimereport.Message;
 import com.erzhan.crimereport.R;
 import com.erzhan.crimereport.classes.Crime;
-import com.erzhan.crimereport.API.MyAsyncTask;
+import com.erzhan.crimereport.API.AsyncTaskFetchCrimes;
 import com.erzhan.crimereport.API.MyJsonParser;
 import com.erzhan.crimereport.fragments.FragmentCrimes;
 
@@ -28,7 +25,6 @@ import org.json.JSONException;
 
 import java.util.ArrayList;
 import java.util.Stack;
-import java.util.concurrent.ExecutionException;
 
 
 public class MainActivity extends ActionBarActivity implements View.OnClickListener {
@@ -37,7 +33,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
     private ArrayList<Crime> crimes;
     private JSONArray crimesJson;
     private FragmentCrimes fragmentCrimes;
-    private MyAsyncTask myAsyncTask;
+    private AsyncTaskFetchCrimes asyncTaskFetchCrimes;
     public boolean isInternetAvailable()
     {
         ConnectivityManager cm =
@@ -48,7 +44,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
                 activeNetwork.isConnectedOrConnecting();
         return isConnected;
     }
-    public void setMyAsyncTaskResult(JSONArray jsonArray)
+    public void setAsyncTaskFetchCrimesResult(JSONArray jsonArray)
     {
         if (isInternetAvailable()) {
 
@@ -57,12 +53,12 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
                 if (crimesJson != null) {
                     crimes = MyJsonParser.parseArrayCrimes(crimesJson);
                     //if first initialization
-                    if (fragmentCrimes != null) {
+                    if (fragmentCrimes == null) {
                         fragmentCrimes = new FragmentCrimes();
                         fragmentCrimes.setCrimes(crimes);
                         showFragment(fragmentCrimes );
                     }
-                    //if reload
+                    //if action_reload_crimes
                     else{
                         fragmentCrimes.reloadListView(crimes);
                     }
@@ -84,8 +80,8 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        myAsyncTask = (MyAsyncTask) new MyAsyncTask(this).execute(MyAsyncTask.GET_CRIMES);
-
+        asyncTaskFetchCrimes = (AsyncTaskFetchCrimes)
+                new AsyncTaskFetchCrimes(this).execute();
     }
 
     @Override
@@ -94,9 +90,10 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-        if (id == R.id.reload)
+        if (id == R.id.action_reload_crimes)
         {
-            myAsyncTask.execute(MyAsyncTask.GET_CRIMES);
+            asyncTaskFetchCrimes = new AsyncTaskFetchCrimes(this);
+            asyncTaskFetchCrimes.execute();
             return true;
         }
         else if (id == R.id.add_report) {
@@ -113,6 +110,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
+
         return true;
     }
     private void showFragment(Fragment f)

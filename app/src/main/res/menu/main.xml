@@ -2,9 +2,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.erzhan.crimereport.activities.MainActivity" >
-    <item android:id="@+id/reload"
-        android:title="@string/add_report"
-        android:icon="@drawable/icon_add_report_action"
+    <item android:id="@+id/action_reload_crimes"
+        android:title="@string/reload_crimes"
+        android:icon="@drawable/icon_reload_action"
         android:orderInCategory="100"
         app:showAsAction="always"/>
 

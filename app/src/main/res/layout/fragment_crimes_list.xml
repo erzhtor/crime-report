@@ -5,14 +5,6 @@
     android:orientation="vertical"
     tools:context="com.erzhan.crimereport.fragments.FragmentCrimes">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="5dp"
-        android:text="Crimes"
-        android:gravity="center"/>
-
     <ListView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

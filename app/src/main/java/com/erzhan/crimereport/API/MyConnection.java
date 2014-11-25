@@ -44,7 +44,7 @@ public class MyConnection {
     }
     private static JSONArray getJsonArray(String url) throws MyConnectionException {
 
-        JSONArray jarray;
+        JSONArray jarray = null;
         StringBuilder builder = new StringBuilder();
         HttpClient client = new DefaultHttpClient();
         HttpGet httpGet = new HttpGet(url);
@@ -75,6 +75,7 @@ public class MyConnection {
         try {
             jarray = new JSONArray(builder.toString());
         } catch (JSONException e) {
+            e.printStackTrace();
             throw new MyConnectionException("Error");
         } // return JSON Object
         return jarray;

@@ -2,7 +2,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.erzhan.crimereport.activities.ActivityCrime" >
-    <item android:id="@+id/action_settings"
+    <item android:id="@+id/action_reload_comments"
+        android:title="@string/reload_comments"
+        android:orderInCategory="100"
+        android:icon="@drawable/icon_reload_action"
+        app:showAsAction="always" />
+    <item android:id="@+id/add_comment"
         android:title="@string/add_comment"
         android:orderInCategory="100"
         android:icon="@drawable/icon_add_report_action"

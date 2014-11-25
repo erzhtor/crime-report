@@ -1,8 +1,12 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light">
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <!-- C  ustomize your theme here. -->
     </style>
 
+    <!--MainActivity theme-->
+    <style name="MainActivityTheme" parent="Theme.AppCompat.Light">
+        <!-- C  ustomize your theme here. -->
+    </style>
 </resources>

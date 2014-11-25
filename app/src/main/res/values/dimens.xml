@@ -13,6 +13,7 @@
     <dimen name="text_comment_size">20dp</dimen>
     <dimen name="text_commentor_name_text_size">15dp</dimen>
     <dimen name="text_commentor_name_size">16dp</dimen>
+    <dimen name="text_navi_buttons">20dp</dimen>
     <!--<dimen name="name">0dp</dimen>-->
     <!--<dimen name="name">0dp</dimen>-->
     <!--<dimen name="name">0dp</dimen>-->

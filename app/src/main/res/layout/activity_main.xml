@@ -16,7 +16,6 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/abc_action_bar_default_height"
-        android:background="@color/navi_back_color"
         android:orientation="horizontal"
         android:layout_alignParentTop="true"
         >
@@ -25,23 +24,29 @@
             android:layout_height="match_parent"
             android:text="@string/crimes"
             android:textStyle="bold"
+            android:background="@color/navi_button_pressed"
             android:textSize="@dimen/text_navi_buttons"
             android:gravity="center"
             android:layout_weight="1"
+            android:onClick="onClick"
+            android:id="@+id/tab_crimes"
             />
         <ImageView
             android:layout_width="2dp"
             android:layout_height="match_parent"
-            android:background="@android:color/black"
+            android:background="@color/navi_divider"
             />
         <TextView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:text="@string/map"
+            android:background="@color/navi_button_idle"
             android:textStyle="bold"
             android:textSize="@dimen/text_navi_buttons"
             android:gravity="center"
             android:layout_weight="1"
+            android:onClick="onClick"
+            android:id="@+id/tab_map"
             />
         </LinearLayout>
 

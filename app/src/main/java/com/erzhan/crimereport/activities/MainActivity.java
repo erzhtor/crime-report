@@ -4,13 +4,16 @@ package com.erzhan.crimereport.activities;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.AsyncTask;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 
 import com.erzhan.crimereport.API.Constants;
 import com.erzhan.crimereport.Message;
@@ -19,6 +22,7 @@ import com.erzhan.crimereport.classes.Crime;
 import com.erzhan.crimereport.API.AsyncTaskFetchCrimes;
 import com.erzhan.crimereport.API.MyJsonParser;
 import com.erzhan.crimereport.fragments.FragmentCrimes;
+import com.erzhan.crimereport.fragments.FragmentMap;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -33,6 +37,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
     private ArrayList<Crime> crimes;
     private JSONArray crimesJson;
     private FragmentCrimes fragmentCrimes;
+    private FragmentMap fragmentMap;
     private AsyncTaskFetchCrimes asyncTaskFetchCrimes;
     public boolean isInternetAvailable()
     {
@@ -47,7 +52,6 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
     public void setAsyncTaskFetchCrimesResult(JSONArray jsonArray)
     {
         if (isInternetAvailable()) {
-
             try {
                 this.crimesJson = jsonArray;
                 if (crimesJson != null) {
@@ -56,10 +60,11 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
                     if (fragmentCrimes == null) {
                         fragmentCrimes = new FragmentCrimes();
                         fragmentCrimes.setCrimes(crimes);
-                        showFragment(fragmentCrimes );
+                        showFragment(fragmentCrimes);
                     }
                     //if action_reload_crimes
                     else{
+//                        Log.i("fragmentCrimes", "reload");
                         fragmentCrimes.reloadListView(crimes);
                     }
 
@@ -82,6 +87,12 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
         asyncTaskFetchCrimes = (AsyncTaskFetchCrimes)
                 new AsyncTaskFetchCrimes(this).execute();
+
+        //set navi buttons onclicklisters
+        TextView textView = (TextView)findViewById(R.id.tab_map);
+        textView.setOnClickListener(this);
+        textView = (TextView)findViewById(R.id.tab_crimes);
+        textView.setOnClickListener(this);
     }
 
     @Override
@@ -118,8 +129,17 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.container, f);
         transaction.commitAllowingStateLoss();
+        if (fragmentStack.size() < 2) {
+            Log.i("size", fragmentStack.size() + "");
+            fragmentStack.add(f);
 
-        fragmentStack.add(f);
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+
     }
 
     @Override
@@ -141,15 +161,35 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
     @Override
     public void onClick(View view) {
 
-        Intent intent = new Intent(this, ActivityCrime.class);
         int index = view.getId();
-        //put crime to intent
 
-        try {
-            intent.putExtra(Constants.CrimeJsonObject, crimesJson.get(index).toString());
-        } catch (JSONException e) {
-            e.printStackTrace();
+        //tab crimes list clicked
+        if (index == R.id.tab_crimes) {
+            view.setBackgroundResource(R.color.navi_button_pressed);
+            ((TextView)findViewById(R.id.tab_map)).setBackgroundResource(R.color.navi_button_idle);
+            if (fragmentCrimes == null){
+                fragmentCrimes = new FragmentCrimes();
+            }
+            showFragment(fragmentCrimes);
         }
-        startActivity(intent);
+        //tab map clicked
+        else if (index == R.id.tab_map) {
+            view.setBackgroundResource(R.color.navi_button_pressed);
+            ((TextView)findViewById(R.id.tab_crimes)).setBackgroundResource(R.color.navi_button_idle);
+            if (fragmentMap == null){
+                fragmentMap = new FragmentMap();
+            }
+            showFragment(fragmentMap);
+        }
+        else {
+            try {
+                Intent intent = new Intent(this, ActivityCrime.class);
+                //put crimeJSON into intent
+                intent.putExtra(Constants.CrimeJsonObject, crimesJson.get(index).toString());
+                startActivity(intent);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
     }
 }

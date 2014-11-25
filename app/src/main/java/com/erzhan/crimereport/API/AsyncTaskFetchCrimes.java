@@ -2,6 +2,7 @@ package com.erzhan.crimereport.API;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.util.Log;
 
@@ -30,7 +31,13 @@ public class AsyncTaskFetchCrimes extends AsyncTask<Void, Void, JSONArray> {
         progressDialog = new ProgressDialog(context);
         progressDialog.setMessage("fetching crimes list from server...");
         progressDialog.show();
-
+        progressDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
+            @Override
+            public void onCancel(DialogInterface dialogInterface) {
+//                Log.i("asynTask", "canceled - ");
+                cancel(true);
+            }
+        });
         super.onPreExecute();
     }
 

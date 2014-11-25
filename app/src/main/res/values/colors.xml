@@ -4,5 +4,7 @@
     <color name="date_time_color">#34353a</color>
     <color name="crime_item_selected_color">#f0f0f0</color>
     <color name="white_color">#ffffff</color>
-    <color name="navi_back_color">#10000000</color>
+    <color name="navi_button_idle">#50000000</color>
+    <color name="navi_button_pressed">#10000000</color>
+    <color name="navi_divider">#70000000</color>
 </resources>

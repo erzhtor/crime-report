@@ -9,8 +9,7 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
+        android:layout_height="wrap_content"
         >
         <LinearLayout
             android:layout_width="match_parent"
@@ -44,30 +43,30 @@
                     android:gravity="center"
                     android:layout_gravity="end" />
             </LinearLayout>
-
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/comments"
+                android:textStyle="bold"
+                android:layout_margin="5dp"
+                android:textSize="@dimen/text_comments_text_size"
+                />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/no_comments"
+                android:layout_margin="5dp"
+                android:id="@+id/no_comments"
+                android:visibility="gone"
+                />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/comments_cont"
+                android:dividerHeight="2dp"
+                android:orientation="vertical"
+                ></LinearLayout>
         </LinearLayout>
     </ScrollView>
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/comments"
-        android:textStyle="bold"
-        android:layout_margin="5dp"
-        android:textSize="@dimen/text_comments_text_size"
-    />
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/no_comments"
-        android:layout_margin="5dp"
-        android:id="@+id/no_comments"
-        android:visibility="gone"
-        />
-    <ListView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/comments_listView"
-        android:dividerHeight="2dp"
-        android:layout_weight="1"
-        ></ListView>
+
 </LinearLayout>

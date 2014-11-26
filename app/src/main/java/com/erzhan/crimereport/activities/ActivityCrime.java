@@ -7,6 +7,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.CheckedTextView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -32,8 +33,7 @@ public class ActivityCrime extends ActionBarActivity {
     private ArrayList<Comment> comments;
     private JSONArray jsonArray;
     private AsyncTaskFetchComments asyncTaskFetchComments;
-    private ListView commentsListView;
-    private AdapterComments adapterComments;
+    private LinearLayout commentsCont;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -83,24 +83,40 @@ public class ActivityCrime extends ActionBarActivity {
                 return;
             }
             //firs load
-            else if (adapterComments == null) {
-                adapterComments = new AdapterComments(
-                        this, R.layout.item_comment, comments);
-                commentsListView = (ListView)findViewById(R.id.comments_listView);
-                commentsListView.setAdapter(adapterComments);
+            else if (commentsCont == null) {
                 textView.setVisibility(View.GONE);
+
+                commentsCont = (LinearLayout)findViewById(R.id.comments_cont);
+                for (int i = 0; i < comments.size(); ++i) {
+                    commentsCont.addView(getCommentView(comments.get(i)));
+                }
             }
             //reload
             else
             {
                 textView.setVisibility(View.GONE);
-                adapterComments.clear();
-                adapterComments.addAll(comments);
-                adapterComments.notifyDataSetChanged();
+
+                commentsCont.removeAllViews();
+                for (int i = 0; i < comments.size(); ++i) {
+                    commentsCont.addView(getCommentView(comments.get(i)));
+                }
             }
         } catch (JSONException e) {
             e.printStackTrace();
         }
+    }
+    private View getCommentView(Comment comment)
+    {
+        View v = getLayoutInflater().inflate(R.layout.item_comment, null);
+
+        TextView textView = (TextView)v.findViewById(R.id.commentor);
+        textView.setText(comment.getCommentor_name());
+
+        // set comment text
+        textView = (TextView)v.findViewById(R.id.comment_text);
+        textView.setText(comment.getCommentText());
+
+        return v;
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

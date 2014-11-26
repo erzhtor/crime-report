@@ -2,13 +2,19 @@ package com.erzhan.crimereport.API;
 
 import android.util.Log;
 
+import com.erzhan.crimereport.classes.Comment;
+
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
 import org.apache.http.StatusLine;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONArray;
 import org.json.JSONException;
 
@@ -16,6 +22,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Erzhan on 22-Nov 14.
@@ -79,6 +87,33 @@ public class MyConnection {
             throw new MyConnectionException("Error");
         } // return JSON Object
         return jarray;
+    }
+    public static void postComment(Comment comment) throws MyConnectionException {
+        HttpClient httpclient = new DefaultHttpClient();
+        HttpPost httppost = new HttpPost(Constants.comment_controller_url);
+
+        try {
+            // add comment
+            List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
+            nameValuePairs.add(new BasicNameValuePair(Constants.CRIME_ID,
+                    comment.getCrime_id() + ""));
+            nameValuePairs.add(new BasicNameValuePair(Constants.COMMENT_TEXT,
+                    comment.getCommentText()));
+            nameValuePairs.add(new BasicNameValuePair(Constants.COMMENTOR_NAME,
+                    comment.getCommentor_name()));
+
+            httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+
+            // Execute HTTP Post Request
+            HttpResponse response = httpclient.execute(httppost);
+
+        } catch (ClientProtocolException e) {
+            // TODO Auto-generated catch block
+            throw new MyConnectionException("ERROR");
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            throw new MyConnectionException("ERROR");
+        }
     }
     public static class MyConnectionException extends Exception
     {

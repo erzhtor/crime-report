@@ -24,10 +24,10 @@
     <string name="crimes">Crimes</string>
     <string name="map">Map</string>
     <string name="internet_not_available">No internet access</string>
-    <!-- <string name="name"></string> -->
-    <!-- <string name="name"></string> -->
-    <!-- <string name="name"></string> -->
-    <!-- <string name="name"></string> -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+     <string name="add_comment_neg_but">Close</string>
+     <string name="add_comment_pos_but">Comment</string>
+     <string name="add_comment_title">New Comment</string>
+     <string name="add_comment_name">Your name</string>
+     <string name="add_comment_text">Your comment</string>
 
 </resources>

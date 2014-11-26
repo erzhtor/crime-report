@@ -1,20 +1,27 @@
 package com.erzhan.crimereport.activities;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.CheckedTextView;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.erzhan.crimereport.API.AsyncTaskFetchComments;
+import com.erzhan.crimereport.API.AsyncTaskPostComment;
 import com.erzhan.crimereport.API.Constants;
 import com.erzhan.crimereport.API.AsyncTaskFetchCrimes;
 import com.erzhan.crimereport.API.MyJsonParser;
+import com.erzhan.crimereport.Message;
 import com.erzhan.crimereport.R;
 import com.erzhan.crimereport.adapters.AdapterComments;
 import com.erzhan.crimereport.classes.Comment;
@@ -138,8 +145,87 @@ public class ActivityCrime extends ActionBarActivity {
             return true;
         }
         else if (id == R.id.add_comment) {
+            showAddCommentAlerDialog();
             return true;
         }
         return super.onOptionsItemSelected(item);
     }
+    private void showAddCommentAlerDialog()
+    {
+        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        //set cancel button
+        final View customView = getLayoutInflater().inflate(R.layout.layout_add_comment, null);
+        builder.setView(customView);
+        builder.setNegativeButton(R.string.add_comment_neg_but, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                // User cancelled the dialog
+//                dialog.cancel();
+            }
+        });
+        //set comment button
+        builder.setPositiveButton(R.string.add_comment_pos_but, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+//                User posted comment
+//                this would be overriden
+            }
+        });
+        //add title
+        builder.setTitle(R.string.add_comment_title);
+        //create dialog
+        AlertDialog dialog = builder.create();
+        dialog.show();
+
+        //override positive button
+        class CustomListener implements View.OnClickListener {
+            private final Dialog dialog;
+            public CustomListener(Dialog dialog) {
+                this.dialog = dialog;
+            }
+            @Override
+            public void onClick(View v) {
+
+                EditText editText = (EditText)customView.findViewById(R.id.commentor_name);
+                String nameStr = editText.getText().toString();
+                editText = (EditText)customView.findViewById(R.id.comment_text_dialog);
+                String commentStr = editText.getText().toString();
+
+                ////both fields are empty
+                if (nameStr.isEmpty() && commentStr.isEmpty())
+                {
+                    Message.message(builder.getContext(), "Fields NAME and TEXT cannot be empty");
+                }
+                //field commentor name is empty
+                else if (nameStr.isEmpty())
+                {
+                    Message.message(builder.getContext(), "Field NAME cannot be empty");
+                }
+                //field comment text is empty
+                else if (commentStr.isEmpty())
+                {
+                    Message.message(builder.getContext(), "Field TEXT cannot be empty");
+                }
+                //everthing is okay
+                else
+                {
+                    Comment comment = new Comment();
+                    comment.setCrime_id(crime.getId());
+                    comment.setCommentor_name(nameStr);
+                    comment.setCommentText(commentStr);
+                    callAsyncTaskPostComment(comment);
+                    dialog.dismiss();
+                }
+
+            }
+        }
+        Button theButton = dialog.getButton(DialogInterface.BUTTON_POSITIVE);
+        theButton.setOnClickListener(new CustomListener(dialog));
+    }
+    private void callAsyncTaskPostComment(Comment comment)
+    {
+        new AsyncTaskPostComment(this).execute(comment);
+        asyncTaskFetchComments = new AsyncTaskFetchComments(this);
+        asyncTaskFetchComments.execute(crime.getId());
+
+    }
+
 }

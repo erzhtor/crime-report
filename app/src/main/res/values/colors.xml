@@ -7,4 +7,5 @@
     <color name="navi_button_idle">#50000000</color>
     <color name="navi_button_pressed">#10000000</color>
     <color name="navi_divider">#70000000</color>
+    <color name="search_view_back_color">#25123540</color>
 </resources>

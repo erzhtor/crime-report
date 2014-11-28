@@ -5,6 +5,13 @@
     android:orientation="vertical"
     tools:context="com.erzhan.crimereport.fragments.FragmentCrimes">
 
+    <SearchView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/searchCrimes"
+        android:background="@color/search_view_back_color"
+        android:layout_margin="5dp"
+        ></SearchView>
     <ListView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

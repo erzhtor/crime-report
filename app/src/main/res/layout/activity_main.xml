@@ -22,7 +22,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:text="@string/crimes"
+            android:text="@string/allCrimes"
             android:textStyle="bold"
             android:background="@color/navi_button_pressed"
             android:textSize="@dimen/text_navi_buttons"

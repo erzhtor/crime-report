@@ -12,7 +12,7 @@ import com.erzhan.crimereport.R;
 import com.erzhan.crimereport.activities.MainActivity;
 import com.erzhan.crimereport.classes.Crime;
 
-import java.util.Calendar;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -21,10 +21,16 @@ import java.util.List;
 public class AdapterCrimes extends ArrayAdapter<Crime> {
 
     private final int textLimit = 100;
-//    private Calendar calendar;
-    public AdapterCrimes(Context context, int resource, List<Crime> objects) {
+    private ArrayList<Integer> crimeIds;
+
+    public void setCrimeIds(ArrayList<Integer> crimeIds) {
+        this.crimeIds = crimeIds;
+    }
+
+    public AdapterCrimes(Context context, int resource,
+                         List<Crime> objects, ArrayList<Integer> indices) {
         super(context, resource, objects);
-//        calendar= Calendar.getInstance();
+        this.crimeIds = indices;
     }
 
     @Override
@@ -59,7 +65,10 @@ public class AdapterCrimes extends ArrayAdapter<Crime> {
 
         //set onclick
         textView = (TextView)v.findViewById(R.id.read_more);
-        textView.setId(position);
+        if (crimeIds == null)
+            textView.setId(position);
+        else
+            textView.setId(crimeIds.get(position));
         textView.setOnClickListener(((MainActivity)getContext()));
 
         return v;

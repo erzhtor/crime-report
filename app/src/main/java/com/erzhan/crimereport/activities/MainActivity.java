@@ -4,7 +4,6 @@ package com.erzhan.crimereport.activities;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.os.AsyncTask;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.os.Bundle;
@@ -59,7 +58,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
                     //if first initialization
                     if (fragmentCrimes == null) {
                         fragmentCrimes = new FragmentCrimes();
-                        fragmentCrimes.setCrimes(crimes);
+                        fragmentCrimes.setAllCrimes(crimes);
                         showFragment(fragmentCrimes);
                     }
                     //if action_reload_crimes

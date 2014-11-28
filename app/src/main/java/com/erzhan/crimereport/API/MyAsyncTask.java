@@ -66,7 +66,7 @@ public class MyAsyncTask extends AsyncTask<String, Void, JSONArray> {
         }
         else
         {
-            ((MainActivity)context).setMyAsyncTaskResult(o);
+            ((MainActivity)context).setAsyncTaskFetchCrimesResult(o);
         }
     }
 }

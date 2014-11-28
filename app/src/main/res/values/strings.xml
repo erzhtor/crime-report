@@ -21,7 +21,7 @@
     <string name="police_report">Обращались в полицию</string>
     <string name="comments">Коментарии</string>
     <string name="no_comments">Комментарии отсутствуют</string>
-    <string name="crimes">Crimes</string>
+    <string name="allCrimes">Crimes</string>
     <string name="map">Map</string>
     <string name="internet_not_available">No internet access</string>
      <string name="add_comment_neg_but">Close</string>

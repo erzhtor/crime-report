@@ -29,3 +29,4 @@ This README would normally document whatever steps are necessary to get your app
 * Other community or team contact
 
 http://mobiforge.com/design-development/developing-with-google-maps-v2-android
+https://console.developers.google.com/project/clever-guard-742/apiui/credential?authuser=0

@@ -26,8 +26,12 @@ public class Constants {
     public static String COMMENT_TEXT = "comment";
 
 
-    public static final String crime_controller_url = "http://sfw.auca.kg/~zufar/cr_my/Controller/Crime_controller.php";
-    public static final String comment_controller_url = "http://sfw.auca.kg/~zufar/cr_my/Controller/Comment_controller.php";
+    public static final String crime_controller_url = "http://sfw.auca.kg:8080/~zufar/cr_my/Controller/Crime_controller.php";
+    public static final String comment_controller_url = "http://sfw.auca.kg:8080/~zufar/cr_my/Controller/Comment_controller.php";
+
+//    public static final String crime_controller_url = "http://sfw.auca.kg/~zufar/cr_my/Controller/Crime_controller.php";
+//    public static final String comment_controller_url = "http://sfw.auca.kg/~zufar/cr_my/Controller/Comment_controller.php";
+
     public static final String CrimeJsonObject = "CrimeJsonObject";
     private Constants() {
     }

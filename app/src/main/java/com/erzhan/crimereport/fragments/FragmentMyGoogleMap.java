@@ -22,7 +22,7 @@ import java.util.ArrayList;
  * https://gist.github.com/joshdholtz/4522551 - usage example
  * https://developers.google.com/maps/documentation/android/map#mapview - MapView
  */
-public class FragmentMap extends Fragment {
+public class FragmentMyGoogleMap extends Fragment {
 
 
     private MapView mapView;
@@ -31,7 +31,7 @@ public class FragmentMap extends Fragment {
     private float defaultZoom = 10f;
     private LatLng defaultLatLng = new LatLng(43.1, -87.9);
 
-    public FragmentMap() {
+    public FragmentMyGoogleMap() {
         // Required empty public constructor
     }
 

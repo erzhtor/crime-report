@@ -2,14 +2,21 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.erzhan.crimereport.fragments.FragmentMap">
-
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    tools:context="com.erzhan.crimereport.fragments.FragmentMyGoogleMap">
+    <com.google.android.gms.maps.MapView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text=":) HERE WOULD BE MAP :)"
-        android:gravity="center"
-        />
+        android:id="@+id/map"
+
+        >
+
+        </com.google.android.gms.maps.MapView>
 
 </FrameLayout>
+
+<!--<fragment xmlns:android="http://schemas.android.com/apk/res/android"-->
+    <!--android:id="@+id/map"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="match_parent"-->
+    <!--class="com.google.android.gms.maps.SupportMapFragment"-->
+    <!--/>-->

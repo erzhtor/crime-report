@@ -21,7 +21,7 @@ import com.erzhan.crimereport.classes.Crime;
 import com.erzhan.crimereport.API.AsyncTaskFetchCrimes;
 import com.erzhan.crimereport.API.MyJsonParser;
 import com.erzhan.crimereport.fragments.FragmentCrimes;
-import com.erzhan.crimereport.fragments.FragmentMap;
+import com.erzhan.crimereport.fragments.FragmentMyGoogleMap;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -36,7 +36,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
     private ArrayList<Crime> crimes;
     private JSONArray crimesJson;
     private FragmentCrimes fragmentCrimes;
-    private FragmentMap fragmentMap;
+    private FragmentMyGoogleMap fragmentMap;
     private AsyncTaskFetchCrimes asyncTaskFetchCrimes;
     public boolean isInternetAvailable()
     {
@@ -176,7 +176,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
             view.setBackgroundResource(R.color.navi_button_pressed);
             ((TextView)findViewById(R.id.tab_crimes)).setBackgroundResource(R.color.navi_button_idle);
             if (fragmentMap == null){
-                fragmentMap = new FragmentMap();
+                fragmentMap = new FragmentMyGoogleMap();
             }
             showFragment(fragmentMap);
         }

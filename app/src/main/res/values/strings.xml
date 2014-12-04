@@ -2,14 +2,14 @@
 <resources>
 
     <string name="app_name">Crime Report</string>
-    <string name="crime_category_1">кража</string>
-    <string name="crime_category_2">убийство</string>
-    <string name="crime_category_3">вымагательство</string>
-    <string name="crime_category_4">автоугон</string>
-    <string name="crime_category_5">изнасилование</string>
+    <string name="crime_category_1">Кража</string>
+    <string name="crime_category_2">Убийство</string>
+    <string name="crime_category_3">Вымагательство</string>
+    <string name="crime_category_4">Автоугон</string>
+    <string name="crime_category_5">Изнасилование</string>
     <string name="crime_category_6">ДТП</string>
     <string name="crime_category_7">Другое</string>
-    <string name="read_more"><u>читать полностью</u></string>
+    <string name="read_more"><u>Читать полностью</u></string>
     <string name="crime_report">Crime Report</string>
     <string name="action_about">About APP</string>
     <string name="add_report">Add Report</string>

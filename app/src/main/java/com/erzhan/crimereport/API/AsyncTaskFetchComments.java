@@ -31,7 +31,7 @@ public class AsyncTaskFetchComments extends AsyncTask<Integer, Void, JSONArray>{
     @Override
     protected void onPreExecute() {
         progressDialog = new ProgressDialog(context);
-        progressDialog.setMessage("fetching crimes list from server...");
+        progressDialog.setMessage("fetching comment list from server...");
         progressDialog.show();
         progressDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
             @Override

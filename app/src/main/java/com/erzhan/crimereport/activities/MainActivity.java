@@ -43,6 +43,9 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 
     private AsyncTaskFetchCrimes asyncTaskFetchCrimes;
 
+    private TextView tab_map;
+    private TextView tab_crimeslist;
+
     public boolean isInternetAvailable()
     {
         ConnectivityManager cm =
@@ -69,6 +72,9 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
                 //if action_reload_crimes
                 else{
                     fragmentCrimes.reloadListView(crimes);
+
+                    fragmentMap.setCrimeList(crimes);
+                    fragmentMap.setCrimeMarkers();
                 }
 
             } else {
@@ -78,25 +84,31 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
             e.printStackTrace();
         }
     }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        if (fragmentMap == null && fragmentCrimes == null) {
+            if (isInternetAvailable()) {
+                asyncTaskFetchCrimes = (AsyncTaskFetchCrimes)
+                        new AsyncTaskFetchCrimes(this).execute();
+            } else {
+                Message.message(this,
+                        getResources().getString(R.string.internet_not_available));
+            }
 
-        if (isInternetAvailable()) {
-            asyncTaskFetchCrimes = (AsyncTaskFetchCrimes)
-                    new AsyncTaskFetchCrimes(this).execute();
+            //set navi buttons onclicklisters
+            tab_map = (TextView) findViewById(R.id.tab_map);
+            tab_map.setOnClickListener(this);
+            tab_crimeslist = (TextView) findViewById(R.id.tab_crimes);
+            tab_crimeslist.setOnClickListener(this);
         }
-        else {
-            Message.message(this,
-                    getResources().getString(R.string.internet_not_available));
-        }
-
-        //set navi buttons onclicklisters
-        TextView textView = (TextView)findViewById(R.id.tab_map);
-        textView.setOnClickListener(this);
-        textView = (TextView)findViewById(R.id.tab_crimes);
-        textView.setOnClickListener(this);
     }
 
     @Override
@@ -152,15 +164,22 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 
         switch (animCase)
         {
+            //fragmentMap
             case SLIDE_IN_FROM_LEFT:
                 transaction.setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_left);
+                tab_map.setBackgroundResource(R.color.navi_button_pressed);
+                tab_crimeslist.setBackgroundResource(R.color.navi_button_idle);
                 break;
+            //fragmentCrimeList
             case SLIDE_IN_FROM_RIGHT:
                 transaction.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_right);
+                tab_map.setBackgroundResource(R.color.navi_button_idle);
+                tab_crimeslist.setBackgroundResource(R.color.navi_button_pressed);
                 break;
         }
         transaction.replace(R.id.container, f);
-        transaction.commitAllowingStateLoss();
+        transaction.commit();
+//        transaction.commitAllowingStateLoss();
     }
 
     @Override
@@ -171,27 +190,32 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         //tab crimes list clicked
         if (index == R.id.tab_crimes) {
             view.setBackgroundResource(R.color.navi_button_pressed);
-            ((TextView)findViewById(R.id.tab_map)).setBackgroundResource(R.color.navi_button_idle);
+            tab_map.setBackgroundResource(R.color.navi_button_idle);
             showFragmentCrimeList();
         }
         //tab map clicked
         else if (index == R.id.tab_map) {
             view.setBackgroundResource(R.color.navi_button_pressed);
-            ((TextView)findViewById(R.id.tab_crimes)).setBackgroundResource(R.color.navi_button_idle);
+            tab_crimeslist.setBackgroundResource(R.color.navi_button_idle);
             showFragmentMap(-1);
         }
         else {
-            try {
-                Intent intent = new Intent(this, ActivityCrime.class);
-
-                //put crimeJSON into intent
-                intent.putExtra(Constants.CrimeJsonObject, crimesJson.get(index).toString());
-                startActivity(intent);
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
+            startCrimeActivity(index);
         }
     }
+    public void startCrimeActivity(int crimeIdex)
+    {
+        Intent intent = new Intent(this, ActivityCrime.class);
+
+        //put crimeJSON into intent
+        try {
+            intent.putExtra(Constants.CrimeJsonObject, crimesJson.get(crimeIdex).toString());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        startActivity(intent);
+    }
+
     @Override
     public void onBackPressed() {
         super.onBackPressed();

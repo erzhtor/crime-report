@@ -32,12 +32,14 @@ import java.util.Stack;
 
 public class MainActivity extends ActionBarActivity implements View.OnClickListener {
 
-    private Stack<Fragment> fragmentStack = new Stack<Fragment>();
     private ArrayList<Crime> crimes;
     private JSONArray crimesJson;
+
     private FragmentCrimes fragmentCrimes;
     private FragmentMyGoogleMap fragmentMap;
+
     private AsyncTaskFetchCrimes asyncTaskFetchCrimes;
+
     public boolean isInternetAvailable()
     {
         ConnectivityManager cm =
@@ -50,42 +52,42 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
     }
     public void setAsyncTaskFetchCrimesResult(JSONArray jsonArray)
     {
-        if (isInternetAvailable()) {
-            try {
-                this.crimesJson = jsonArray;
-                if (crimesJson != null) {
-                    crimes = MyJsonParser.parseArrayCrimes(crimesJson);
-                    //if first initialization
-                    if (fragmentCrimes == null) {
-                        fragmentCrimes = new FragmentCrimes();
-                        fragmentCrimes.setAllCrimes(crimes);
-                        showFragment(fragmentCrimes);
-                    }
-                    //if action_reload_crimes
-                    else{
-//                        Log.i("fragmentCrimes", "reload");
-                        fragmentCrimes.reloadListView(crimes);
-                    }
+        try {
+            this.crimesJson = jsonArray;
+            if (crimesJson != null) {
+                crimes = MyJsonParser.parseArrayCrimes(crimesJson);
 
-                } else {
-                    //error
+                // /if first initialization
+                if (fragmentCrimes == null) {
+                    fragmentCrimes = new FragmentCrimes();
+                    fragmentCrimes.setAllCrimes(crimes);
+                    showFragmentCrimeList();
                 }
-            } catch (JSONException e) {
-                e.printStackTrace();
+                //if action_reload_crimes
+                else{
+                    fragmentCrimes.reloadListView(crimes);
+                }
+
+            } else {
+                //error
             }
-        }
-        else
-        {
-            Message.message(this,
-                    getResources().getString(R.string.internet_not_available));
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
     }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        asyncTaskFetchCrimes = (AsyncTaskFetchCrimes)
-                new AsyncTaskFetchCrimes(this).execute();
+
+        if (isInternetAvailable()) {
+            asyncTaskFetchCrimes = (AsyncTaskFetchCrimes)
+                    new AsyncTaskFetchCrimes(this).execute();
+        }
+        else {
+            Message.message(this,
+                    getResources().getString(R.string.internet_not_available));
+        }
 
         //set navi buttons onclicklisters
         TextView textView = (TextView)findViewById(R.id.tab_map);
@@ -123,39 +125,30 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 
         return true;
     }
+    public void showFragmentCrimeList()
+    {
+        if (fragmentCrimes == null){
+            fragmentCrimes = new FragmentCrimes();
+        }
+        showFragment(fragmentCrimes);
+    }
+    public void showFragmentMap(int crimeIndex)
+    {
+        if (fragmentMap == null){
+            fragmentMap = new FragmentMyGoogleMap();
+            fragmentMap.setCrimeList(crimes);
+        }
+        if (crimeIndex != -1) {
+            fragmentMap.focusOnCrime(crimeIndex);
+        }
+        showFragment(fragmentMap);
+    }
     private void showFragment(Fragment f)
     {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.container, f);
         transaction.commitAllowingStateLoss();
-        if (fragmentStack.size() < 2) {
-            Log.i("size", fragmentStack.size() + "");
-            fragmentStack.add(f);
-
-        }
     }
-
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-    }
-
 
     @Override
     public void onClick(View view) {
@@ -166,23 +159,18 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         if (index == R.id.tab_crimes) {
             view.setBackgroundResource(R.color.navi_button_pressed);
             ((TextView)findViewById(R.id.tab_map)).setBackgroundResource(R.color.navi_button_idle);
-            if (fragmentCrimes == null){
-                fragmentCrimes = new FragmentCrimes();
-            }
-            showFragment(fragmentCrimes);
+            showFragmentCrimeList();
         }
         //tab map clicked
         else if (index == R.id.tab_map) {
             view.setBackgroundResource(R.color.navi_button_pressed);
             ((TextView)findViewById(R.id.tab_crimes)).setBackgroundResource(R.color.navi_button_idle);
-            if (fragmentMap == null){
-                fragmentMap = new FragmentMyGoogleMap();
-            }
-            showFragment(fragmentMap);
+            showFragmentMap(-1);
         }
         else {
             try {
                 Intent intent = new Intent(this, ActivityCrime.class);
+
                 //put crimeJSON into intent
                 intent.putExtra(Constants.CrimeJsonObject, crimesJson.get(index).toString());
                 startActivity(intent);
@@ -190,5 +178,21 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
                 e.printStackTrace();
             }
         }
+    }
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+    }
+    @Override
+    protected void onPause() {
+        super.onPause();
+    }
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
+    @Override
+    protected void onStop() {
+        super.onStop();
     }
 }

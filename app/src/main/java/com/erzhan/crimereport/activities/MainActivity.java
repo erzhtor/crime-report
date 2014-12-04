@@ -32,6 +32,9 @@ import java.util.Stack;
 
 public class MainActivity extends ActionBarActivity implements View.OnClickListener {
 
+    private static final int SLIDE_IN_FROM_LEFT = 0;
+    private static final int SLIDE_IN_FROM_RIGHT = 1;
+
     private ArrayList<Crime> crimes;
     private JSONArray crimesJson;
 
@@ -130,7 +133,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         if (fragmentCrimes == null){
             fragmentCrimes = new FragmentCrimes();
         }
-        showFragment(fragmentCrimes);
+        showFragment(fragmentCrimes, SLIDE_IN_FROM_RIGHT);
     }
     public void showFragmentMap(int crimeIndex)
     {
@@ -141,11 +144,21 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         if (crimeIndex != -1) {
             fragmentMap.focusOnCrime(crimeIndex);
         }
-        showFragment(fragmentMap);
+        showFragment(fragmentMap, SLIDE_IN_FROM_LEFT);
     }
-    private void showFragment(Fragment f)
+    private void showFragment(Fragment f, int animCase)
     {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+
+        switch (animCase)
+        {
+            case SLIDE_IN_FROM_LEFT:
+                transaction.setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_left);
+                break;
+            case SLIDE_IN_FROM_RIGHT:
+                transaction.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_right);
+                break;
+        }
         transaction.replace(R.id.container, f);
         transaction.commitAllowingStateLoss();
     }

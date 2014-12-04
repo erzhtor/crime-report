@@ -11,8 +11,8 @@ public class Crime {
     private String date;
     private String time;
     private int policeReport;
-    private long latitude;
-    private long longitude;
+    private float latitude;
+    private float longitude;
 
     public int getId() {
         return id;
@@ -62,19 +62,19 @@ public class Crime {
         this.policeReport = policeReport;
     }
 
-    public long getLatitude() {
+    public float getLatitude() {
         return latitude;
     }
 
-    public void setLatitude(long latitude) {
+    public void setLatitude(float latitude) {
         this.latitude = latitude;
     }
 
-    public long getLongitude() {
+    public float getLongitude() {
         return longitude;
     }
 
-    public void setLongitude(long longitude) {
+    public void setLongitude(float longitude) {
         this.longitude = longitude;
     }
 

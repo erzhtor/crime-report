@@ -8,6 +8,7 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import com.erzhan.crimereport.API.Constants;
+import com.erzhan.crimereport.Message;
 import com.erzhan.crimereport.R;
 import com.erzhan.crimereport.activities.MainActivity;
 import com.erzhan.crimereport.classes.Crime;
@@ -18,7 +19,7 @@ import java.util.List;
 /**
  * Created by Erzhan on 22-Nov 14.
  */
-public class AdapterCrimes extends ArrayAdapter<Crime> {
+public class AdapterCrimes extends ArrayAdapter<Crime> implements View.OnClickListener {
 
     private final int textLimit = 100;
     private ArrayList<Integer> crimeIds;
@@ -63,15 +64,29 @@ public class AdapterCrimes extends ArrayAdapter<Crime> {
         }
         textView.setText(text);
 
+        if (crimeIds == null) {
+            textView.setId(position);
+        }
+        else {
+            textView.setId(crimeIds.get(position));
+        }
+        textView.setOnClickListener(this);
+
         //set onclick
         textView = (TextView)v.findViewById(R.id.read_more);
-        if (crimeIds == null)
+        if (crimeIds == null) {
             textView.setId(position);
-        else
+        }
+        else {
             textView.setId(crimeIds.get(position));
+        }
         textView.setOnClickListener(((MainActivity)getContext()));
 
         return v;
     }
 
+    @Override
+    public void onClick(View view) {
+        ((MainActivity)getContext()).showFragmentMap(view.getId());
+    }
 }

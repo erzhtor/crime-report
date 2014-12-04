@@ -3,10 +3,13 @@ package com.erzhan.crimereport.fragments;
 
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.erzhan.crimereport.API.Constants;
+import com.erzhan.crimereport.Message;
 import com.erzhan.crimereport.R;
 import com.erzhan.crimereport.classes.Crime;
 import com.google.android.gms.maps.CameraUpdate;
@@ -15,12 +18,16 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
+
 import java.util.ArrayList;
 
 /**
  * MapView used instead MapFragment because of Custom Framgent implementation
  * https://gist.github.com/joshdholtz/4522551 - usage example
  * https://developers.google.com/maps/documentation/android/map#mapview - MapView
+ * http://mobiforge.com/design-development/developing-with-google-maps-v2-android
  */
 public class FragmentMyGoogleMap extends Fragment {
 
@@ -28,22 +35,61 @@ public class FragmentMyGoogleMap extends Fragment {
     private MapView mapView;
     private GoogleMap mMap;
     private ArrayList<Crime> crimes = null;
-    private float defaultZoom = 10f;
-    private LatLng defaultLatLng = new LatLng(43.1, -87.9);
 
+    private float defaultZoom = 14f;
+    private LatLng defaultLatLng = new LatLng(42.87973793695002, 74.60605144500732);
+
+    private int focusedCrime = -1;
     public FragmentMyGoogleMap() {
         // Required empty public constructor
     }
-
+    /**
+     * shows infoWindow of mapFragment
+     * @param crimeIndex index of crime in ArrayList
+     */
+    public void focusOnCrime(int crimeIndex)
+    {
+        this.focusedCrime = crimeIndex;
+        this.defaultLatLng = new LatLng(crimes.get(focusedCrime).getLatitude(),
+                crimes.get(focusedCrime).getLongitude());
+    }
     public void setCrimeList(ArrayList<Crime> crimes)
     {
         this.crimes = crimes;
     }
+    private void setCrimeMarkers()
+    {
+        if (mMap != null && crimes != null)
+        {
+            for (int i = 0; i < crimes.size(); ++i)
+            {
+                Crime c = crimes.get(i);
+                String crimeType = getActivity().getResources().
+                        getString(Constants.getCrimeCategoryStringID(c.getCategory()));
+                MarkerOptions markerOptions =
+                        new MarkerOptions().
+                                position(new LatLng(c.getLatitude(), c.getLongitude())).
+                                title(crimeType).snippet(c.getDescription());
 
+                Marker marker = mMap.addMarker(markerOptions);
+                if (focusedCrime == i)
+                    marker.showInfoWindow();
+                else
+                    marker.hideInfoWindow();
+            }
+
+            mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
+                @Override
+                public void onInfoWindowClick(Marker marker) {
+                    Message.message(getActivity(), marker.getId());
+                }
+            });
+        }
+
+    }
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
     }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -67,7 +113,7 @@ public class FragmentMyGoogleMap extends Fragment {
         CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(defaultLatLng, defaultZoom);
         mMap.animateCamera(cameraUpdate);
 
-
+        setCrimeMarkers();
 
         return v;
     }

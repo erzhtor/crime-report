@@ -60,8 +60,8 @@ public class MyJsonParser {
         crime.setDate(json.getString(Constants.DATE));
         crime.setTime(json.getString(Constants.TIME));
         crime.setPoliceReport(json.getInt(Constants.POLICE_REPORT));
-        crime.setLatitude(json.getLong(Constants.LATITUDE));
-        crime.setLongitude(json.getLong(Constants.LONGITUDE));
+        crime.setLatitude((float)json.getDouble(Constants.LATITUDE));
+        crime.setLongitude((float)json.getDouble(Constants.LONGITUDE));
 //
 //        Log.i("id", crime.getId() + "");
 //        Log.i("desc", crime.getDescription());

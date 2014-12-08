@@ -129,6 +129,7 @@ public class ActivityCrime extends ActionBarActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.activity_crime, menu);
+        getActionBar().setDisplayHomeAsUpEnabled(true);
         return true;
     }
 
@@ -138,7 +139,11 @@ public class ActivityCrime extends ActionBarActivity {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-        if (id == R.id.action_reload_comments)
+        if (id == android.R.id.home)
+        {
+            this.onBackPressed();
+        }
+        else if (id == R.id.action_reload_comments)
         {
             asyncTaskFetchComments = new AsyncTaskFetchComments(this);
             asyncTaskFetchComments.execute(crime.getId());

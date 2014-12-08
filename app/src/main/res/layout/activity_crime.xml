@@ -42,6 +42,7 @@
                     android:clickable="false"
                     android:gravity="center"
                     android:layout_gravity="end" />
+                    android:layout_gravity="end" />
             </LinearLayout>
             <TextView
                 android:layout_width="match_parent"

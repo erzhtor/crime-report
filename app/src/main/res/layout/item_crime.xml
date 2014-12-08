@@ -15,7 +15,7 @@
             android:textStyle="italic"
             />
         <TextView
-            android:id="@+id/read_more"
+            android:id="@+id/showOnMap"
             android:textSize="@dimen/text_read_more_size"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

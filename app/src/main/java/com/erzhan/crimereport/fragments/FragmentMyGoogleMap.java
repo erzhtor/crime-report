@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import com.erzhan.crimereport.API.Constants;
 import com.erzhan.crimereport.Message;
 import com.erzhan.crimereport.R;
+import com.erzhan.crimereport.activities.ActivityAddCrime;
 import com.erzhan.crimereport.activities.MainActivity;
 import com.erzhan.crimereport.classes.Crime;
 import com.google.android.gms.maps.CameraUpdate;
@@ -30,21 +31,25 @@ import java.util.ArrayList;
  * https://developers.google.com/maps/documentation/android/map#mapview - MapView
  * http://mobiforge.com/design-development/developing-with-google-maps-v2-android
  */
-public class FragmentMyGoogleMap extends Fragment {
+public class FragmentMyGoogleMap extends Fragment implements GoogleMap.OnMapClickListener {
 
 
     private MapView mapView;
     private GoogleMap mMap;
     private ArrayList<Crime> crimes = null;
 
-    private float defaultZoom = 13f;
+    private float defaultZoom = 12f;
     private LatLng defaultLatLng = new LatLng(42.87973793695002, 74.60605144500732);
 
     private int focusedCrime = -1;
     private final char splitChar = '|';
     boolean firstLoad = true;
+    boolean isAddCrime = false;
     public FragmentMyGoogleMap() {
         // Required empty public constructor
+    }
+    public void setIsAddCrime(boolean isAddCrime) {
+        this.isAddCrime = isAddCrime;
     }
     /**
      * shows infoWindow of mapFragment
@@ -82,18 +87,18 @@ public class FragmentMyGoogleMap extends Fragment {
                 else
                     marker.hideInfoWindow();
             }
-
-            mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
-                @Override
-                public void onInfoWindowClick(Marker marker) {
-                    int index = Integer.parseInt(
-                            marker.getTitle().split("\\|")[1].split("\\=")[1]);
-                    ((MainActivity)getActivity()).startCrimeActivity(index);
-//                    Message.message(getActivity(), index + "=") ;
-//                    Log.i("log", marker.getTitle().split("\\|")[1]);
-
-                }
-            });
+//
+//            mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
+//                @Override
+//                public void onInfoWindowClick(Marker marker) {
+//                    int index = Integer.parseInt(
+//                            marker.getTitle().split("\\|")[1].split("\\=")[1]);
+//                    ((MainActivity)getActivity()).startCrimeActivity(index);
+//                }
+//            });
+        }
+        else if (isAddCrime){
+            mMap.setOnMapClickListener(this);
         }
     }
     @Override
@@ -147,5 +152,15 @@ public class FragmentMyGoogleMap extends Fragment {
     public void onLowMemory() {
         super.onLowMemory();
         mapView.onLowMemory();
+    }
+
+    @Override
+    public void onMapClick(LatLng latLng) {
+        mMap.clear();
+
+        ((ActivityAddCrime)getActivity()).pos = latLng;
+
+        MarkerOptions markerOptions = new MarkerOptions().position(latLng).draggable(true);
+        mMap.addMarker(markerOptions);
     }
 }

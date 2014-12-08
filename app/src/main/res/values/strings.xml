@@ -9,7 +9,7 @@
     <string name="crime_category_5">Изнасилование</string>
     <string name="crime_category_6">ДТП</string>
     <string name="crime_category_7">Другое</string>
-    <string name="read_more"><u>Читать полностью</u></string>
+    <string name="read_more"><u>Посмотреть на карте</u></string>
     <string name="crime_report">Crime Report</string>
     <string name="action_about">About APP</string>
     <string name="add_report">Add Report</string>
@@ -21,13 +21,21 @@
     <string name="police_report">Обращались в полицию</string>
     <string name="comments">Коментарии</string>
     <string name="no_comments">Комментарии отсутствуют</string>
+    <string name="cancel">Отменить</string>
+    <string name="next">Продолжить</string>
+    <string name="back">Назад</string>
+    <string name="send">Отправить</string>
     <string name="allCrimes">Crimes</string>
     <string name="map">Map</string>
     <string name="internet_not_available">No internet access</string>
-     <string name="add_comment_neg_but">Close</string>
-     <string name="add_comment_pos_but">Comment</string>
-     <string name="add_comment_title">New Comment</string>
-     <string name="add_comment_name">Your name</string>
-     <string name="add_comment_text">Your comment</string>
+    <string name="add_comment_neg_but">Close</string>
+    <string name="add_comment_pos_but">Comment</string>
+    <string name="add_comment_title">New Comment</string>
+    <string name="add_comment_name">Your name</string>
+    <string name="add_comment_text">Your comment</string>
+    <string name="title_activity_activity_add_crime">Сообщить</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>

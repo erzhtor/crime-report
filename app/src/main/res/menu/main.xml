@@ -7,14 +7,13 @@
         android:icon="@drawable/icon_reload_action"
         android:orderInCategory="100"
         app:showAsAction="always"/>
-
     <item android:id="@+id/add_report"
         android:title="@string/add_report"
         android:icon="@drawable/icon_add_report_action"
         android:orderInCategory="100"
-        app:showAsAction="always"/>
+        app:showAsAction="ifRoom"/>
     <item android:id="@+id/action_about"
         android:title="@string/action_about"
         android:orderInCategory="100"
-        app:showAsAction="collapseActionView" />t
+        app:showAsAction="never" />
 </menu>

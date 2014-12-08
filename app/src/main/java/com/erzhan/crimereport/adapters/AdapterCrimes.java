@@ -70,17 +70,17 @@ public class AdapterCrimes extends ArrayAdapter<Crime> implements View.OnClickLi
         else {
             textView.setId(crimeIds.get(position));
         }
-        textView.setOnClickListener(this);
+        textView.setOnClickListener(((MainActivity)getContext()));
 
         //set onclick
-        textView = (TextView)v.findViewById(R.id.read_more);
+        textView = (TextView)v.findViewById(R.id.showOnMap);
         if (crimeIds == null) {
             textView.setId(position);
         }
         else {
             textView.setId(crimeIds.get(position));
         }
-        textView.setOnClickListener(((MainActivity)getContext()));
+        textView.setOnClickListener(this);
 
         return v;
     }

@@ -20,7 +20,6 @@ public class AsyncTaskPostComment
     private Activity context;
     private ProgressDialog progressDialog;
     private boolean success = true;
-    private JSONArray jsonArray = null;
 
 
     public AsyncTaskPostComment(Activity context)

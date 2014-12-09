@@ -9,7 +9,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
+import com.erzhan.crimereport.Message;
 import com.erzhan.crimereport.R;
+import com.erzhan.crimereport.classes.Crime;
 import com.erzhan.crimereport.fragments.FragmentAddCrime;
 import com.erzhan.crimereport.fragments.FragmentMyGoogleMap;
 import com.google.android.gms.maps.model.LatLng;
@@ -24,8 +26,11 @@ public class ActivityAddCrime extends ActionBarActivity implements View.OnClickL
     private static final int NO_ANIM = -1;
 
     public LatLng pos;
+    private Crime crime = null;
+
     private Button next;
     private Button back;
+
     private Stack<Fragment> fragmentStack = new Stack<Fragment>();
 
     @Override
@@ -119,12 +124,74 @@ public class ActivityAddCrime extends ActionBarActivity implements View.OnClickL
         switch(view.getId())
         {
             case R.id.back:
+                if (!fragmentStack.isEmpty() && fragmentStack.peek() instanceof FragmentAddCrime) {
+                    readCrimeAttributes(false);
+                }
                 onBackPressed();
                 break;
             case R.id.next:
-                FragmentAddCrime f = new FragmentAddCrime();
-                showFragment(f, SLIDE_IN_FROM_LEFT);
+                if (fragmentStack.peek() instanceof FragmentAddCrime) {
+                    readCrimeAttributes(true);
+                }
+                else {
+                    FragmentAddCrime f = new FragmentAddCrime();
+                    f.setCrime(crime);
+                    showFragment(f, SLIDE_IN_FROM_LEFT);
+                }
                 break;
+        }
+    }
+    private void readCrimeAttributes(boolean sendCrime)
+    {
+        crime = new Crime();
+        FragmentAddCrime f = (FragmentAddCrime)fragmentStack.peek();
+        String description = f.desciption.getText().toString();
+        if (sendCrime && description == null || description.isEmpty())
+        {
+            Message.message(this, "description CAN NOT be empty");
+            return;
+        }
+        else if (description != null) {
+            crime.setDescription(description);
+        }
+        int category = f.category.getSelectedItemPosition();
+        crime.setCategory(category);
+        int police_report = ((f.police_report.isChecked()==true)?1:0);
+        crime.setPoliceReport(police_report);
+
+        //date
+        int year = f.date.getYear();
+        int month = f.date.getMonth();
+        month++; // cause month starts from 0 (i don't know why, ask google)
+        int day = f.date.getDayOfMonth();
+        String s = year + "-";
+        if (month < 10) {
+            s += "0";
+        }
+        s += month + "-";
+        if (day < 10) {
+            s +="0";
+        }
+        s += day + "";
+        crime.setDate(s);
+
+        //time
+        int hour = f.time.getCurrentHour();
+        int minute = f.time.getCurrentMinute();
+        s = "";
+        if (hour < 10) {
+            s +="0";
+        }
+        s += hour + ":";
+        if (minute < 10) {
+            s += "0";
+        }
+        s += minute + ":00";
+        crime.setTime(s);
+
+        //send crime
+        if (sendCrime) {
+
         }
     }
 }

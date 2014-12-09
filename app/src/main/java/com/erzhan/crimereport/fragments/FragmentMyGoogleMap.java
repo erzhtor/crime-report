@@ -87,15 +87,16 @@ public class FragmentMyGoogleMap extends Fragment implements GoogleMap.OnMapClic
                 else
                     marker.hideInfoWindow();
             }
-//
-//            mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
-//                @Override
-//                public void onInfoWindowClick(Marker marker) {
-//                    int index = Integer.parseInt(
-//                            marker.getTitle().split("\\|")[1].split("\\=")[1]);
-//                    ((MainActivity)getActivity()).startCrimeActivity(index);
-//                }
-//            });
+
+//            show crime details on markerInfoWindowClick
+            /*mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
+                @Override
+                public void onInfoWindowClick(Marker marker) {
+                    int index = Integer.parseInt(
+                            marker.getTitle().split("\\|")[1].split("\\=")[1]);
+                    ((MainActivity)getActivity()).startCrimeActivity(index);
+                }
+            });*/
         }
         else if (isAddCrime){
             mMap.setOnMapClickListener(this);
@@ -132,7 +133,6 @@ public class FragmentMyGoogleMap extends Fragment implements GoogleMap.OnMapClic
         else {
             mMap.moveCamera(cameraUpdate);
         }
-
         setCrimeMarkers();
 
         return v;

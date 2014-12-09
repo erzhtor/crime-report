@@ -3,6 +3,7 @@ package com.erzhan.crimereport.API;
 import android.util.Log;
 
 import com.erzhan.crimereport.classes.Comment;
+import com.erzhan.crimereport.classes.Crime;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -101,6 +102,33 @@ public class MyConnection {
                     comment.getCommentText()));
             nameValuePairs.add(new BasicNameValuePair(Constants.COMMENTOR_NAME,
                     comment.getCommentor_name()));
+
+            httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+
+            // Execute HTTP Post Request
+            HttpResponse response = httpclient.execute(httppost);
+
+        } catch (ClientProtocolException e) {
+            // TODO Auto-generated catch block
+            throw new MyConnectionException("ERROR");
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            throw new MyConnectionException("ERROR");
+        }
+    }
+    public static void postCrime(Crime crime) throws MyConnectionException {
+        HttpClient httpclient = new DefaultHttpClient();
+        HttpPost httppost = new HttpPost(Constants.comment_controller_url);
+
+        try {
+            // add comment
+            List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
+            /*nameValuePairs.add(new BasicNameValuePair(Constants.CRIME_ID,
+                    comment.getCrime_id() + ""));
+            nameValuePairs.add(new BasicNameValuePair(Constants.COMMENT_TEXT,
+                    comment.getCommentText()));
+            nameValuePairs.add(new BasicNameValuePair(Constants.COMMENTOR_NAME,
+                    comment.getCommentor_name()));*/
 
             httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
 

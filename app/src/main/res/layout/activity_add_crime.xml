@@ -14,12 +14,13 @@
         />
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
         android:orientation="horizontal"
+        android:id="@+id/buttonCont"
         >
         <Button
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="50dp"
             android:id="@+id/back"
             android:text="Cancel"
             android:layout_weight="1"
@@ -28,7 +29,7 @@
             />
         <Button
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="50dp"
             android:id="@+id/next"
             android:text="Next"
             android:gravity="center"

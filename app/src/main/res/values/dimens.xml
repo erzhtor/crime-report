@@ -14,7 +14,7 @@
     <dimen name="text_commentor_name_text_size">15dp</dimen>
     <dimen name="text_commentor_name_size">16dp</dimen>
     <dimen name="text_navi_buttons">20dp</dimen>
-    <!--<dimen name="name">0dp</dimen>-->
+    <dimen name="padding_add_comment_conts">2dp</dimen>
     <!--<dimen name="name">0dp</dimen>-->
     <!--<dimen name="name">0dp</dimen>-->
 

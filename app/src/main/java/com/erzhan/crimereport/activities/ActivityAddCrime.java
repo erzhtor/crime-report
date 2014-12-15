@@ -9,6 +9,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
+import com.erzhan.crimereport.API.AsyncTaskPostCrime;
 import com.erzhan.crimereport.Message;
 import com.erzhan.crimereport.R;
 import com.erzhan.crimereport.classes.Crime;
@@ -134,9 +135,14 @@ public class ActivityAddCrime extends ActionBarActivity implements View.OnClickL
                     readCrimeAttributes(true);
                 }
                 else {
-                    FragmentAddCrime f = new FragmentAddCrime();
-                    f.setCrime(crime);
-                    showFragment(f, SLIDE_IN_FROM_LEFT);
+                    if (pos == null) {
+                     Message.message(this, "Add crime position!!!");
+                    }
+                    else {
+                        FragmentAddCrime f = new FragmentAddCrime();
+                        f.setCrime(crime);
+                        showFragment(f, SLIDE_IN_FROM_LEFT);
+                    }
                 }
                 break;
         }
@@ -144,9 +150,13 @@ public class ActivityAddCrime extends ActionBarActivity implements View.OnClickL
     private void readCrimeAttributes(boolean sendCrime)
     {
         crime = new Crime();
+
+        crime.setLatitude((float) pos.latitude);
+        crime.setLongitude((float) pos.longitude);
+
         FragmentAddCrime f = (FragmentAddCrime)fragmentStack.peek();
         String description = f.desciption.getText().toString();
-        if (sendCrime && description == null || description.isEmpty())
+        if (sendCrime && (description == null || description.isEmpty()) )
         {
             Message.message(this, "description CAN NOT be empty");
             return;
@@ -155,7 +165,7 @@ public class ActivityAddCrime extends ActionBarActivity implements View.OnClickL
             crime.setDescription(description);
         }
         int category = f.category.getSelectedItemPosition();
-        crime.setCategory(category);
+        crime.setCategory(++category);
         int police_report = ((f.police_report.isChecked()==true)?1:0);
         crime.setPoliceReport(police_report);
 
@@ -191,7 +201,7 @@ public class ActivityAddCrime extends ActionBarActivity implements View.OnClickL
 
         //send crime
         if (sendCrime) {
-
+            new AsyncTaskPostCrime(this).execute(crime);
         }
     }
 }

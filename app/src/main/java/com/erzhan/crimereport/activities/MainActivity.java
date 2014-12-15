@@ -73,8 +73,10 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
                 else{
                     fragmentCrimes.reloadListView(crimes);
 
-                    fragmentMap.setCrimeList(crimes);
-                    fragmentMap.setCrimeMarkers();
+                    if (fragmentMap != null) {
+                        fragmentMap.setCrimeList(crimes);
+//                        fragmentMap.setCrimeMarkers();
+                    }
                 }
 
             } else {

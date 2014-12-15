@@ -70,7 +70,7 @@ public class FragmentAddCrime extends Fragment {
         if (crime != null)
         {
             desciption.setText(crime.getDescription());
-            category.setSelection(crime.getCategory());
+            category.setSelection(crime.getCategory() - 1);
             police_report.setChecked((crime.getPoliceReport()==1)?true:false);
 
             //parse date and set

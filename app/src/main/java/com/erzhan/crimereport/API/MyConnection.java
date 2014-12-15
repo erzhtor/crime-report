@@ -118,17 +118,25 @@ public class MyConnection {
     }
     public static void postCrime(Crime crime) throws MyConnectionException {
         HttpClient httpclient = new DefaultHttpClient();
-        HttpPost httppost = new HttpPost(Constants.comment_controller_url);
+        HttpPost httppost = new HttpPost(Constants.crime_controller_url);
 
         try {
             // add comment
             List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
-            /*nameValuePairs.add(new BasicNameValuePair(Constants.CRIME_ID,
-                    comment.getCrime_id() + ""));
-            nameValuePairs.add(new BasicNameValuePair(Constants.COMMENT_TEXT,
-                    comment.getCommentText()));
-            nameValuePairs.add(new BasicNameValuePair(Constants.COMMENTOR_NAME,
-                    comment.getCommentor_name()));*/
+            nameValuePairs.add(new BasicNameValuePair(Constants.DESCRIPTION,
+                    crime.getDescription()));
+            nameValuePairs.add(new BasicNameValuePair(Constants.CATEGORY,
+                    crime.getCategory() + ""));
+            nameValuePairs.add(new BasicNameValuePair(Constants.DATE,
+                    crime.getDate()));
+            nameValuePairs.add(new BasicNameValuePair(Constants.TIME,
+                    crime.getTime()));
+            nameValuePairs.add(new BasicNameValuePair(Constants.POLICE_REPORT,
+                    crime.getPoliceReport() + ""));
+            nameValuePairs.add(new BasicNameValuePair(Constants.LATITUDE,
+                    crime.getLatitude() + ""));
+            nameValuePairs.add(new BasicNameValuePair(Constants.LONGITUDE,
+                    crime.getLongitude() + ""));
 
             httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
 

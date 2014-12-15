@@ -28,7 +28,7 @@ public class AsyncTaskPostCrime extends AsyncTask<Crime, Void, Void> {
     @Override
     protected void onPreExecute() {
         progressDialog = new ProgressDialog(context);
-        progressDialog.setMessage("posting comment ...");
+        progressDialog.setMessage("posting crime ...");
         progressDialog.show();
         progressDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
             @Override
